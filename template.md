@@ -1,3 +1,9 @@
+### TO-DO
+- Clean Up Functions and Code
+- Graph Scatter Plots and Linear Regression Plots 
+- Compare it to the 2020 Season as Test Data
+- Take Quiz 
+
 ### Design draft format
 
 Before you start Luther work, you should be able to complete the following form for your project. However, keep in mind that throughout the design iterations of your project, many parts of it will likely change (i.e. increase/decrease in number of movies, types of characteristics, etc), so this is just a starting point.
