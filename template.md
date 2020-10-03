@@ -1,5 +1,4 @@
 ### TO-DO
-- Clean Up Functions and Code
 - Graph Scatter Plots and Linear Regression Plots 
 - Compare it to the 2020 Season as Test Data
 - Take Quiz 
