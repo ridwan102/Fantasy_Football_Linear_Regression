@@ -3,7 +3,7 @@ import requests
 import numpy as np
 import pandas as pd
 
-def get_running_back_df(link):
+def get_running_back_df(link, season):
     
     """
     From Pro-Football-Reference link stub, request running back html, parse with BeautifulSoup, and
@@ -17,10 +17,10 @@ def get_running_back_df(link):
     """
     
     base_url = 'https://www.pro-football-reference.com'
-    season = '/gamelog/2019'
+    gamelog = '/gamelog/'
     
     #Create full url to scrape
-    url = base_url + link + season
+    url = base_url + link + gamelog + season
 
     #Request HTML and parse
     response = requests.get(url)
@@ -115,7 +115,7 @@ def get_wide_receiver_df(link):
     return df_wide_receivers
 
 
-def get_defense_df(link):
+def get_defense_df(team, season):
     
     """
     From Pro-Football-Reference link stub, request running back html, parse with BeautifulSoup, and
@@ -128,10 +128,10 @@ def get_defense_df(link):
     Return information as a dictionary.
     """
     
-    base_url = 'https://www.pro-football-reference.com'
+    base_url = 'https://www.pro-football-reference.com/teams/'
     
     #Create full url to scrape
-    url = base_url + link
+    url = base_url + team + "/" + season + ".htm"
 
     #Request HTML and parse
     response = requests.get(url)

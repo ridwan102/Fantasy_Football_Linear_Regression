@@ -3,7 +3,7 @@ import requests
 import re
 import pandas as pd
 
-def all_position_stats(year, stat):
+def all_position_stats(year, stat, max_rows):
 
     base_url = 'https://www.pro-football-reference.com/years/'
     
@@ -23,7 +23,7 @@ def all_position_stats(year, stat):
     #Calling running backs
     position_dict = {}
 
-    for row in rows[:25]:
+    for row in rows[:max_rows]:
         items = row.find_all('td')
         link = items[0].find('a')
         position_stat, url = link.text, link['href']
@@ -55,7 +55,7 @@ def all_rb_defense_headers(year, stat):
 
     return column_headers
 
-def all_wide_receiver_headers(year, stat):
+def all_wide_receiver_quarterback_headers(year, stat):
 
     base_url = 'https://www.pro-football-reference.com/years/'
     
