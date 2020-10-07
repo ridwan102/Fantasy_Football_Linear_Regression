@@ -38,32 +38,25 @@ def get_running_back_df(link, season):
 
     for row in rows:
         items = row.find_all('td')
-        running_backs[row] = [i.text for i in items[:13]]
+        running_backs[row] = [i.text for i in items[:18]]
 
     # #Create a dataframe of running back stats
     df_running_backs = pd.DataFrame(running_backs).T.reset_index() #transpose
 
     df_running_backs.columns = ['Name','Date','Game', 'Week', 'Age', 'Team', '','Opp', 'Result','Game_Started',
-    'Carries', 'Total_Yards', 'Yards/Carry', 'Touchdowns'] 
-
-    # table_head = soup.find('thead').find_all('tr')[1]
-
-    #Breaking down all data via rows 
-    # column_headers = [row.text for row in table_head.find_all('th')[:14]]  # tr tag is for rows
-    # column_headers[0] = 'Name'
-    # df_running_backs.columns = column_headers
+    'Carries', 'Rush_Yards', 'Yards_per_Carry', 'Rush_TD','Targets','Receptions','Receiving_Yards','Y/R','Receiving_TD'] 
 
     df_running_backs['Name'] = np.where(df_running_backs['Name'], name , df_running_backs['Name'])
-    df_running_backs = df_running_backs.drop(columns=['Age','','Game_Started'])
+    df_running_backs = df_running_backs.drop(columns=['Week','Age','','Opp','Result','Game_Started','Targets'])
 
     #Convert columns to preferred data-types
     df_running_backs['Date'] = pd.to_datetime(df_running_backs['Date'])
-    df_running_backs[['Game','Carries', 'Total_Yards','Yards/Carry','Touchdowns']] = df_running_backs[['Game','Carries', 'Total_Yards','Yards/Carry','Touchdowns']].apply(pd.to_numeric)
+    df_running_backs[['Game','Carries', 'Rush_Yards','Yards_per_Carry','Rush_TD','Receptions','Receiving_Yards','Receiving_TD']] = df_running_backs[['Game','Carries', 'Rush_Yards','Yards_per_Carry','Rush_TD','Receptions','Receiving_Yards','Receiving_TD']].apply(pd.to_numeric)
 
     return df_running_backs
 
 
-def get_wide_receiver_df(link):
+def get_wide_receiver_df(link, season):
     
     """
     From Pro-Football-Reference link stub, request wide receiver html, parse with BeautifulSoup, and
@@ -77,10 +70,10 @@ def get_wide_receiver_df(link):
     """
     
     base_url = 'https://www.pro-football-reference.com'
-    season = '/gamelog/2019'
+    gamelog = '/gamelog/'
     
     #Create full url to scrape
-    url = base_url + link + season
+    url = base_url + link + gamelog + season
 
     #Request HTML and parse
     response = requests.get(url)
@@ -94,23 +87,23 @@ def get_wide_receiver_df(link):
     #Breaking down all data via rows via tr tag
     rows = [row for row in table.select('tr')] 
 
-    running_backs = {}
+    wide_receivers = {}
 
     for row in rows:
         items = row.find_all('td')
-        running_backs[row] = [i.text for i in items[:15]]
+        wide_receivers[row] = [i.text for i in items[:15]]
 
     # #Create a dataframe of running back stats
-    df_wide_receivers = pd.DataFrame(running_backs).T.reset_index() #transpose
+    df_wide_receivers = pd.DataFrame(wide_receivers).T.reset_index() #transpose
 
     df_wide_receivers.columns = ['Name','Date','Game', 'Week', 'Age', 'Team', '','Opp', 'Result','Game_Started',
-    'Targets', 'Receptions', 'Total_Yards', 'Yards/Reception', 'Touchdowns', 'Catch%'] 
+    'Targets', 'Receptions', 'Total_Yards', 'Yards_per_Reception', 'Touchdowns', 'Catch%'] 
 
     df_wide_receivers['Name'] = np.where(df_wide_receivers['Name'], name , df_wide_receivers['Name'])
     df_wide_receivers = df_wide_receivers.drop(columns=['Age','','Game_Started'])
 
     df_wide_receivers['Date'] = pd.to_datetime(df_wide_receivers['Date'])
-    df_wide_receivers[['Game','Receptions', 'Total_Yards','Yards/Reception','Touchdowns']] = df_wide_receivers[['Game','Receptions', 'Total_Yards','Yards/Reception','Touchdowns']].apply(pd.to_numeric)
+    df_wide_receivers[['Game','Receptions', 'Total_Yards','Yards_per_Reception','Touchdowns']] = df_wide_receivers[['Game','Receptions', 'Total_Yards','Yards_per_Reception','Touchdowns']].apply(pd.to_numeric)
 
     return df_wide_receivers
 
@@ -166,10 +159,60 @@ def get_defense_df(team, season):
     return df_defense
 
 
-def all_individual_stats(position_df, position_df_link):
-    individual_stats = position_df(position_df_link.Link[0])
+def fantasy_points(link, season):
+    
+    """
+    From Pro-Football-Reference link stub, request running back html, parse with BeautifulSoup, and
+    collect 
+        - Name 
+        - Carries
+        - Rush Yards
+        - Rush Yard Per Attempt
+        - Touchdowns
+    Return information as a dictionary.
+    """
+
+    base_url = 'https://www.pro-football-reference.com'
+    fantasy = '/fantasy/'
+
+    #Create full url to scrape
+    url = base_url + link + fantasy + season
+
+    #Request HTML and parse
+    response = requests.get(url)
+    page = response.text
+    soup = BeautifulSoup(page,"lxml")
+
+    name = soup.find('h1').find('span').text
+
+    table = soup.find('tbody')
+
+    #Breaking down all data via rows via tr tag
+    rows = [row for row in table.select('tr')] 
+
+    fantasy_points = {}
+
+    for row in rows:
+        # fantasy_points[row] = rows.find_all(class_='right')[28].text
+        items = row.find_all('td',attrs={'data-stat':'fantasy_points'})
+        fantasy_points[row] = [i.text for i in items]
+    
+    df_fantasy_points = pd.DataFrame(fantasy_points).T.reset_index() #transpose
+
+    df_fantasy_points.columns = ['Name','Fantasy_Points']
+
+    df_fantasy_points['Name'] = np.where(df_fantasy_points['Name'], name , df_fantasy_points['Name'])
+    
+    # df_defense['Date'] = pd.to_datetime(df_defense['Date'])
+    df_fantasy_points[['Fantasy_Points']] = df_fantasy_points[['Fantasy_Points']].apply(pd.to_numeric)
+
+
+    return df_fantasy_points
+
+def all_individual_stats(position_df, position_df_link, season):
+    individual_stats = position_df(position_df_link.Link[0],season)
 
     for link in range(len(position_df_link.Link)):
-        individual_stats = individual_stats.append(position_df(position_df_link.Link[link]))
+        individual_stats = individual_stats.append(position_df(position_df_link.Link[link],season))
 
     return individual_stats.reset_index()
