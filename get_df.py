@@ -53,7 +53,7 @@ def get_running_back_df(link, season):
     df_running_backs['Date'] = pd.to_datetime(df_running_backs['Date'])
     df_running_backs[['Game','Carries', 'Rush_Yards','Yards_per_Carry','Rush_TD','Receptions','Receiving_Yards','Receiving_TD']] = df_running_backs[['Game','Carries', 'Rush_Yards','Yards_per_Carry','Rush_TD','Receptions','Receiving_Yards','Receiving_TD']].apply(pd.to_numeric)
 
-    return df_running_backs
+    return df_running_backs[:-1]
 
 
 def get_wide_receiver_df(link, season):
@@ -105,7 +105,7 @@ def get_wide_receiver_df(link, season):
     df_wide_receivers['Date'] = pd.to_datetime(df_wide_receivers['Date'])
     df_wide_receivers[['Game','Receptions', 'Total_Yards','Yards_per_Reception','Touchdowns']] = df_wide_receivers[['Game','Receptions', 'Total_Yards','Yards_per_Reception','Touchdowns']].apply(pd.to_numeric)
 
-    return df_wide_receivers
+    return df_wide_receivers[:-1]
 
 
 def get_defense_df(team, season):
@@ -207,12 +207,12 @@ def fantasy_points(link, season):
     df_fantasy_points[['Fantasy_Points']] = df_fantasy_points[['Fantasy_Points']].apply(pd.to_numeric)
 
 
-    return df_fantasy_points
+    return df_fantasy_points[1:]
 
 def all_individual_stats(position_df, position_df_link, season):
     individual_stats = position_df(position_df_link.Link[0],season)
 
-    for link in range(len(position_df_link.Link)):
+    for link in range(1, len(position_df_link.Link)):
         individual_stats = individual_stats.append(position_df(position_df_link.Link[link],season))
 
     return individual_stats.reset_index()

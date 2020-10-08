@@ -18,7 +18,7 @@ def all_position_stats(year, stat, max_rows):
     table = soup.find('tbody')
 
     #Breaking down all data via rows 
-    rows = [row for row in table.select('tr')]  # tr tag is for rows
+    rows = [row for row in table.find_all('tr',attrs={'class': None})]  # tr tag is for rows
 
     #Calling running backs
     position_dict = {}
