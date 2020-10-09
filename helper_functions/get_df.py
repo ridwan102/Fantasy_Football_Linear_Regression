@@ -46,8 +46,7 @@ def get_running_back_df(link, season):
     df_running_backs.columns = ['Name','Date','Game', 'Week', 'Age', 'Team', '',
     'Opp', 'Result','Game_Started','Carries', 'Rush_Yards', 'Yards_per_Carry', 
     'Rush_TD','Targets','Receptions','Receiving_Yards','Y/R','Receiving_TD','Catch%', 
-    'Y/Tgt', 'Total_TDs','Pts','Fumbles']#,'Fumbles_Forced','Fumbles_Recovered',
-    #'Fumbled_Yards','Fumbled_TDs'] 
+    'Y/Tgt', 'Total_TDs','Pts','Fumbles']
 
     df_running_backs['Name'] = np.where(df_running_backs['Name'], name , df_running_backs['Name'])
     df_running_backs = df_running_backs.drop(columns=['Date','Game','Team','Week','Age','','Opp','Result','Game_Started','Catch%'])
@@ -97,22 +96,28 @@ def get_wide_receiver_df(link, season):
 
     for row in rows:
         items = row.find_all('td')
-        wide_receivers[row] = [i.text for i in items[:15]]
+        wide_receivers[row] = [i.text for i in items[:23]]
 
     # #Create a dataframe of running back stats
     df_wide_receivers = pd.DataFrame(wide_receivers).T.reset_index() #transpose
 
-    df_wide_receivers.columns = ['Name','Date','Game', 'Week', 'Age', 'Team', '','Opp', 'Result','Game_Started',
-    'Targets', 'Receptions', 'Total_Yards', 'Yards_per_Reception', 'Touchdowns', 'Catch%'] 
+    df_wide_receivers.columns = ['Name','Date','Game', 'Week', 'Age', 'Team', '',
+    'Opp', 'Result','Game_Started','Targets','Receptions','Receiving_Yards','Y/R','Receiving_TD','Catch%', 
+    'Y/Tgt', 'Carries', 'Rush_Yards', 'Yards_per_Carry', 'Rush_TD','Total_TDs','Pts','Fumbles']
 
     df_wide_receivers['Name'] = np.where(df_wide_receivers['Name'], name , df_wide_receivers['Name'])
-    df_wide_receivers = df_wide_receivers.drop(columns=['Age','','Game_Started'])
+    df_wide_receivers = df_wide_receivers.drop(columns=['Date','Game','Team','Week','Age','','Opp',
+    'Result','Game_Started','Catch%','Rush_TD','Total_TDs', 'Pts' ,'Fumbles'])
 
-    df_wide_receivers['Date'] = pd.to_datetime(df_wide_receivers['Date'])
-    df_wide_receivers[['Game','Receptions', 'Total_Yards','Yards_per_Reception','Touchdowns']] = df_wide_receivers[['Game','Receptions', 'Total_Yards','Yards_per_Reception','Touchdowns']].apply(pd.to_numeric)
+    #Convert columns to preferred data-types
+    # df_wide_receivers['Date'] = pd.to_datetime(df_wide_receivers['Date'])
 
+    df_wide_receivers[['Carries','Rush_Yards','Yards_per_Carry','Targets','Receptions','Receiving_Yards', 
+    'Y/R', 'Receiving_TD','Y/Tgt']] = df_wide_receivers[['Carries','Rush_Yards','Yards_per_Carry','Targets','Receptions','Receiving_Yards', 
+    'Y/R', 'Receiving_TD','Y/Tgt']].apply(pd.to_numeric)
     return df_wide_receivers[:-1]
 
+    
 
 def get_defense_df(team, season):
     
