@@ -38,20 +38,26 @@ def get_running_back_df(link, season):
 
     for row in rows:
         items = row.find_all('td')
-        running_backs[row] = [i.text for i in items[:18]]
+        running_backs[row] = [i.text for i in items[:23]]
 
     # #Create a dataframe of running back stats
     df_running_backs = pd.DataFrame(running_backs).T.reset_index() #transpose
 
-    df_running_backs.columns = ['Name','Date','Game', 'Week', 'Age', 'Team', '','Opp', 'Result','Game_Started',
-    'Carries', 'Rush_Yards', 'Yards_per_Carry', 'Rush_TD','Targets','Receptions','Receiving_Yards','Y/R','Receiving_TD'] 
+    df_running_backs.columns = ['Name','Date','Game', 'Week', 'Age', 'Team', '',
+    'Opp', 'Result','Game_Started','Carries', 'Rush_Yards', 'Yards_per_Carry', 
+    'Rush_TD','Targets','Receptions','Receiving_Yards','Y/R','Receiving_TD','Catch%', 
+    'Y/Tgt', 'Total_TDs','Pts','Fumbles']#,'Fumbles_Forced','Fumbles_Recovered',
+    #'Fumbled_Yards','Fumbled_TDs'] 
 
     df_running_backs['Name'] = np.where(df_running_backs['Name'], name , df_running_backs['Name'])
-    df_running_backs = df_running_backs.drop(columns=['Week','Age','','Opp','Result','Game_Started','Targets'])
+    df_running_backs = df_running_backs.drop(columns=['Date','Game','Team','Week','Age','','Opp','Result','Game_Started','Catch%'])
 
     #Convert columns to preferred data-types
-    df_running_backs['Date'] = pd.to_datetime(df_running_backs['Date'])
-    df_running_backs[['Game','Carries', 'Rush_Yards','Yards_per_Carry','Rush_TD','Receptions','Receiving_Yards','Receiving_TD']] = df_running_backs[['Game','Carries', 'Rush_Yards','Yards_per_Carry','Rush_TD','Receptions','Receiving_Yards','Receiving_TD']].apply(pd.to_numeric)
+    # df_running_backs['Date'] = pd.to_datetime(df_running_backs['Date'])
+    df_running_backs[['Carries', 'Rush_Yards', 'Yards_per_Carry', 'Rush_TD','Targets',
+    'Receptions','Receiving_Yards','Y/R','Receiving_TD', 'Y/Tgt','Total_TDs','Pts','Fumbles']] = df_running_backs[['Carries', 
+    'Rush_Yards', 'Yards_per_Carry', 'Rush_TD','Targets', 'Receptions','Receiving_Yards','Y/R',
+    'Receiving_TD','Y/Tgt','Total_TDs','Pts','Fumbles']].apply(pd.to_numeric)
 
     return df_running_backs[:-1]
 
