@@ -7,13 +7,8 @@ def get_running_back_df(link, season):
     
     """
     From Pro-Football-Reference link stub, request running back html, parse with BeautifulSoup, and
-    collect 
-        - Name 
-        - Carries
-        - Rush Yards
-        - Rush Yard Per Attempt
-        - Touchdowns
-    Return information as a dictionary.
+    collect given features
+    Return information as a dataframe.
     """
     
     base_url = 'https://www.pro-football-reference.com'
@@ -64,14 +59,9 @@ def get_running_back_df(link, season):
 def get_wide_receiver_df(link, season):
     
     """
-    From Pro-Football-Reference link stub, request wide receiver html, parse with BeautifulSoup, and
-    collect 
-        - Name 
-        - Carries
-        - Rush Yards
-        - Rush Yard Per Attempt
-        - Touchdowns
-    Return information as a dictionary.
+    From Pro-Football-Reference link stub, request running back html, parse with BeautifulSoup, and
+    collect given features
+    Return information as a dataframe.
     """
     
     base_url = 'https://www.pro-football-reference.com'
@@ -123,13 +113,8 @@ def get_defense_df(team, season):
     
     """
     From Pro-Football-Reference link stub, request running back html, parse with BeautifulSoup, and
-    collect 
-        - Name 
-        - Carries
-        - Rush Yards
-        - Rush Yard Per Attempt
-        - Touchdowns
-    Return information as a dictionary.
+    collect given features
+    Return information as a dataframe.
     """
     
     base_url = 'https://www.pro-football-reference.com/teams/'
@@ -173,14 +158,7 @@ def get_defense_df(team, season):
 def fantasy_points(link, season):
     
     """
-    From Pro-Football-Reference link stub, request running back html, parse with BeautifulSoup, and
-    collect 
-        - Name 
-        - Carries
-        - Rush Yards
-        - Rush Yard Per Attempt
-        - Touchdowns
-    Return information as a dictionary.
+    Scrapes fantasy points for each individual player
     """
 
     base_url = 'https://www.pro-football-reference.com'
@@ -221,6 +199,11 @@ def fantasy_points(link, season):
     return df_fantasy_points[1:]
 
 def all_individual_stats(position_df, position_df_link, season):
+
+    """
+    Creates a table with all players features for their individual game for given season
+    """
+
     individual_stats = position_df(position_df_link.Link[0],season)
 
     for link in range(1, len(position_df_link.Link)):

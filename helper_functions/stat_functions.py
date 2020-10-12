@@ -5,6 +5,9 @@ import pandas as pd
 
 def all_position_stats(year, stat, max_rows):
 
+    """Function that scrapes all running back and wide receiver statistics for the given year.
+    """
+
     base_url = 'https://www.pro-football-reference.com/years/'
     
     #Create full url to scrape
@@ -37,6 +40,9 @@ def all_position_stats(year, stat, max_rows):
 
 def all_rb_defense_headers(year, stat):
 
+    """Creates headers for the scraped running back list
+    """
+
     base_url = 'https://www.pro-football-reference.com/years/'
     
     #Create full url to scrape
@@ -56,6 +62,9 @@ def all_rb_defense_headers(year, stat):
     return column_headers
 
 def all_wide_receiver_headers(year, stat):
+
+    """Creates headers for the scraped wide receivers list
+    """
 
     base_url = 'https://www.pro-football-reference.com/years/'
     
