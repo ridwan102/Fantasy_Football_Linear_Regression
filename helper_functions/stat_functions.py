@@ -55,7 +55,7 @@ def all_rb_defense_headers(year, stat):
 
     return column_headers
 
-def all_wide_receiver_quarterback_headers(year, stat):
+def all_wide_receiver_headers(year, stat):
 
     base_url = 'https://www.pro-football-reference.com/years/'
     
