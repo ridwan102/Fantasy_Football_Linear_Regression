@@ -37,7 +37,6 @@ Aggregate Features on 4-week running averages (ie.: Game 5 features predicting F
  * `Yellowbrick`
 
 
-
 ### Other: Being a data scientist, the real sh*t
 
 * Data scientists in real life have multiple goals that fit under the
