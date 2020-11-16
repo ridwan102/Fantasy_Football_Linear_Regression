@@ -1,7 +1,7 @@
 # Project 2: Regression
 Predicting the Fantasy Points in a subsequent game for a NFL Running Back (RB) and Wide Receiver (WR) based off of the statistics from the previous game.
 
-#### Presentation Link: [YouTube] (https://www.youtube.com/watch?v=8dBq4N-We7o&t=1s)
+#### Presentation Link: [YouTube](https://www.youtube.com/watch?v=8dBq4N-We7o&t=1s)
 
 ## Project Scope
 
